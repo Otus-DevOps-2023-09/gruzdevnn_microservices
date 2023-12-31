@@ -17,7 +17,7 @@ jdauphant.nginx
 vault.key
 # Vagrant & molecule
 .vagrant/
-#*.log
+*.log
 *.pyc
 .molecule
 .cache
