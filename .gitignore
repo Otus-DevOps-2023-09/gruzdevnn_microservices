@@ -24,6 +24,7 @@ vault.key
 .pytest_cache
 Pipfile.lock
 Pipfile
+.env
 
 # Игнорируем директорию в любой директории проекта
 #access.log
