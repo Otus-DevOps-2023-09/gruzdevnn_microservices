@@ -42,10 +42,12 @@ deploy_dev_job:
 staging:
   stage: stage
   when: manual
+  only:
+    - /^\d+\.\d+\.\d+/
   script:
     - echo 'Deploy'
   environment:
-    name: beta
+    name: stage
     url: http://beta.example.com
 
 production:
