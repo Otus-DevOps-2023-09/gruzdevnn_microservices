@@ -1,5 +1,0 @@
-REPOSITORY                 TAG       IMAGE ID       CREATED         SIZE
-engineer/ubuntu-tmp-file   latest    a54dac6ffe91   3 minutes ago   63.2MB
-nginx                      latest    a6bd71f48f68   3 weeks ago     187MB
-ubuntu                     18.04     f9a80a55f492   6 months ago    63.2MB
-hello-world                latest    d2c94e258dcb   7 months ago    13.3kB

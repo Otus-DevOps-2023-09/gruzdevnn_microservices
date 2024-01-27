@@ -11,3 +11,9 @@ sudo docker run -d --network=reddit -p 9292:9292 gruzdevwertnn/ui:1.0
 # Doker-4
 Чтобы сменить базовое имя проекта, нужно использовать команду:
 docker-compose -p "proj" up -d
+# Monitoring-1
+    Пункт 1 Запустили Prometheus из готового образа
+    Пункт 2 Создали свой образ Prometheus
+    Пункт 3 Запустили микросервисы с мониторингом
+    Пункт 4 Добавили Exporters
+Образы на DockerHub (https://hub.docker.com/u/gruzdevwertnn)
