@@ -17,3 +17,5 @@ docker-compose -p "proj" up -d
     Пункт 3 Запустили микросервисы с мониторингом
     Пункт 4 Добавили Exporters
 Образы на DockerHub (https://hub.docker.com/u/gruzdevwertnn)
+# Logging-1
+
