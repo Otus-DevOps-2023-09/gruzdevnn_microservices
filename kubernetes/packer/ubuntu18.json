@@ -1,0 +1,17 @@
+{
+"builders": [
+{
+"type": "yandex",
+"service_account_key_file": "/home/engineer/mykeys/key.json",
+"zone":      "ru-central1-a",
+"folder_id": "b1gtu89ljuktik0kfuk2",
+"source_image_family": "ubuntu-2204-lts",
+"image_name": "kubernetes-base-{{timestamp}}",
+"image_family": "kubernetes-base",
+"subnet_id": "e9b6novi7vdmhr9geb99",
+"use_ipv4_nat":  true,
+"ssh_username": "ubuntu",
+"platform_id": "standard-v1"
+}
+]
+}
