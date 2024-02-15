@@ -41,64 +41,64 @@ yc compute instance create \
 
 Получаем адреса
 
-worker address: 158.160.116.245
-master address: 158.160.127.58
+    worker address: 158.160.116.245
+    master address: 158.160.127.58
 
 Заходим на воркер
 
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/engineer
-ssh yc-user@158.160.116.245
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/engineer
+    ssh yc-user@158.160.116.245
 
 Ставим докер 19.03
 
-sudo apt-get update
-sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt update
-sudo apt install docker-ce=5:19.03.12~3-0~ubuntu-bionic docker-ce-cli=5:19.03.12~3-0~ubuntu-bionic containerd.io
+    sudo apt-get update
+    sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt update
+    sudo apt install docker-ce=5:19.03.12~3-0~ubuntu-bionic docker-ce-cli=5:19.03.12~3-0~ubuntu-bionic containerd.io
 
 Ставим кубер 1.19
 
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -            
-sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main" 
-sudo apt install kubectl=1.19.14-00 kubelet=1.19.14-00 kubeadm=1.19.14-00
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -            
+    sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main" 
+    sudo apt install kubectl=1.19.14-00 kubelet=1.19.14-00 kubeadm=1.19.14-00
 
 Делаем то же самое на мастере
 
 Инициализируем мастер где 158.160.127.58 - мастер
 
-sudo kubeadm init --apiserver-cert-extra-sans=158.160.127.58 --apiserver-advertise-address=0.0.0.0 --control-plane-endpoint=158.160.127.58 --pod-network-cidr=10.244.0.0/16
+    sudo kubeadm init --apiserver-cert-extra-sans=158.160.127.58 --apiserver-advertise-address=0.0.0.0 --control-plane-endpoint=158.160.127.58 --pod-network-cidr=10.244.0.0/16
 
 В результате получаем команду, которую выполняем на воркере
 
 Then you can join any number of worker nodes by running the following on each as root:
 
-sudo kubeadm join 158.160.127.58:6443 --token lrm8su.4n7nhhunqrv6g2je \
+    sudo kubeadm join 158.160.127.58:6443 --token lrm8su.4n7nhhunqrv6g2je \
     --discovery-token-ca-cert-hash sha256:1111111111111111111111111111111111111111111111111111111111111111
 
 Выполняем команды на мастере
 
-mkdir $HOME/.kube/
-sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $USER $HOME/.kube/config
+    mkdir $HOME/.kube/
+    sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $USER $HOME/.kube/config
 
 Теперь можно посмотреть ноды
 
-kubectl get nodes
+    kubectl get nodes
 
 Смотрим описание
 
-kubectl describe node fhmh0n0e7jmkeoojeubk 
-kubectl describe node fhmrd2jm0lloqod8n97d
+    kubectl describe node fhmh0n0e7jmkeoojeubk 
+    kubectl describe node fhmrd2jm0lloqod8n97d
 
 Ставим калико (мастер нода)
 
-curl https://docs.projectcalico.org/archive/v3.15/manifests/calico.yaml -O
+    curl https://docs.projectcalico.org/archive/v3.15/manifests/calico.yaml -O
 
 
-vim calico.yaml
+    vim calico.yaml
 
 Листаем в почти в самый низ кнопкой PgDn (Page Down)
 
@@ -109,20 +109,20 @@ vim calico.yaml
 
 Применяем
 
-kubectl apply -f calico.yaml
+    kubectl apply -f calico.yaml
 
 Проверяем 
 
-kubectl get nodes
+    kubectl get nodes
 
 Создаем на мастере файлы из задания
 Пробуем запустить
 
-kubectl apply -f ui-deployment.yml
-kubectl apply -f  post-deployment.yml
-kubectl apply -f  comment-deployment.yml
-kubectl apply -f  mongo-deployment.yml
+    kubectl apply -f ui-deployment.yml
+    kubectl apply -f  post-deployment.yml
+    kubectl apply -f  comment-deployment.yml
+    kubectl apply -f  mongo-deployment.yml
 
 Проверяем
 
-kubectl get pods
+    kubectl get pods
