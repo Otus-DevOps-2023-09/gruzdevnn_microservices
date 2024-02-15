@@ -1,0 +1,6 @@
+ {
+    "mservice_account_key_file": "/home/any.key",
+    "mfolder_id": "111111111111",
+    "msource_image_family": "ubuntu-2004-lts",
+    "msubnet_id": "222222222222222"
+  }
