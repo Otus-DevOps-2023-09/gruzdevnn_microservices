@@ -126,3 +126,59 @@ Then you can join any number of worker nodes by running the following on each as
 Проверяем
 
     kubectl get pods
+
+# Kubernetes-3
+
+Создаём кубернетис кластер на яндексе (1.15)
+Создаём группу хостов на HDD (на SSD не создавалось)
+Подключаемся:
+
+    yc managed-kubernetes cluster get-credentials test-k8s --external --force
+
+Проверяем:
+
+    kubectl config current-context
+
+Деплоим:
+
+    kubectl apply -f ./reddit
+
+Создаём ui-service.yml
+
+    kubectl apply -f ui-service.yml -n dev
+
+Качаем ингресс:
+
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+
+Запускаем:
+
+    kubectl apply -f ui-ingress.yml -n dev
+    kubectl get ingress.networking.k8s.io/ui
+
+Записываем ip 158.160.150.30
+Создаём сертификаты:
+
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=158.160.150.30"
+    kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev
+    kubectl describe secret ui-ingress -n dev
+
+Добавляем файлы tls.key tls.crt в гит игнор
+Отключаем http трафик
+Создаём файлы политик и применяем их:
+
+    kubectl apply -f mongo-network-policy.yml -n dev
+
+Создаём файлы для хранилища
+Создаём хранилище:
+
+    yc compute disk create \
+    --name k8s \
+    --size 4 \
+    --description "disk for k8s"
+
+Записываем id: fhmd43iqp8m1p0gnrd8p
+Запускаем:
+
+    kubectl apply -f mongo-deployment.yml -n dev
+

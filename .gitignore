@@ -28,6 +28,8 @@ vault.key
 Pipfile.lock
 Pipfile
 .env
+tls.key
+tls.crt
 
 # Игнорируем директорию в любой директории проекта
 #access.log
