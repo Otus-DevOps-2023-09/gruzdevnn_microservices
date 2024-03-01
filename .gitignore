@@ -30,6 +30,7 @@ Pipfile
 .env
 tls.key
 tls.crt
+Gitlab_ci/
 
 # Игнорируем директорию в любой директории проекта
 #access.log
