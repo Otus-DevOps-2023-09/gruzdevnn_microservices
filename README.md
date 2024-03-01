@@ -182,3 +182,64 @@ Then you can join any number of worker nodes by running the following on each as
 
     kubectl apply -f mongo-deployment.yml -n dev
 
+# Kubernetes-4
+
+Запускаем кубер на яндекс облаке 1.26 (на hdd) имя - test-k8s
+
+Подключаемся
+
+    yc managed-kubernetes cluster get-credentials test-k8s --external --force
+
+Проверяем подключение
+
+    kubectl config current-context
+
+В результате должно быть test-k8s
+
+Устанавливаем ингресс
+
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+
+Добавляем репозиторий Гитлаба и обновляем
+
+    helm repo add gitlab https://charts.gitlab.io/
+    helm repo update
+
+Устанавливаем gitlab community edition, пока без сертификата
+
+    helm upgrade --install gitlab gitlab/gitlab \
+      --namespace gitlab --create-namespace \
+      --timeout 600s \
+      --set global.hosts.https=false \
+      --set certmanager-issuer.email=example@nn.ru \
+      --set global.kas.enabled=true \
+      --set global.edition=ce \
+      --set global.time_zone=Europe/Moscow \
+      --set postgresql.image.tag=13.6.0
+
+Ждём окончания установки, смотрим адрес ингресс
+
+    kubectl get ingress -n gitlab
+
+Обновляем, добавляем сертификат
+
+    helm upgrade --install gitlab gitlab/gitlab \
+      --namespace gitlab --create-namespace \
+      --timeout 600s \
+      --set global.hosts.externalIP=158.160.151.226 \
+      --set global.hosts.domain=158.160.151.226.sslip.io \
+      --set global.hosts.https=true \
+      --set global.ingress.configureCertmanager=true \
+      --set certmanager-issuer.email=myemail@mail.ru \
+      --set global.kas.enabled=true \
+      --set global.edition=ce \
+      --set global.time_zone=Europe/Moscow \
+      --set postgresql.image.tag=13.6.0
+
+Ждём окончания установки и смотрим админский пароль
+
+    kubectl get secret --namespace=gitlab gitlab-gitlab-initial-root-password -o json | jq '.data | map_values(@base64d)'
+
+Заходим на https://gitlab.158.160.151.226.sslip.io   под root и пароль выше.
+
+
